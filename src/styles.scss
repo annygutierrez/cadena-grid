@@ -1,1 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+// $odd-row-background-color: red;
+// $odd-row-background-color: red;
+$grid-size: 7px !default;
+$header-background-color: white !default;
+$header-height: $grid-size * 9 !default;
+$row-height: $grid-size * 9 !default;
+$row-border-width: 0px !default;
+$border-color: transparent !default;
+.ag-center-cols-viewport {
+  display: flex;
+  justify-content: space-between;
+}
+.ag-center-cols-container {
+
+}
+.my-class-1 {
+  font-weight: bold;
+}
+.ag-header-cell-text {
+  color: #333333;
+}
+.ag-header-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.ag-header-cell-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.ag-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+}
+.ag-row {
+  // margin-top: 20px;
+  // margin-bottom: 20px;
+  box-shadow: 8px 4px 8px 2px rgba(189, 189, 189, 0.2), 3px 8px 20px 2px rgba(189, 189, 189, 0.19);
+}
+@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
+@import "../node_modules/ag-grid-community/src/styles/ag-theme-balham/sass/ag-theme-balham.scss";
+
+
+
