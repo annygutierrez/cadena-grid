@@ -7,20 +7,25 @@ import { AfterViewInit } from './after-view-init';
   templateUrl: './checkbox-filter.component.html',
   styleUrls: ['./checkbox-filter.component.scss']
 })
-export class CheckboxFilterComponent implements OnInit, AfterViewInit {
+export class CheckboxFilterComponent implements OnInit {
   @ViewChild('i', {static: false}) textInput;
 
 
   constructor() { }
 
   filter = '';
+
+  rejected = null;
+  approved = null;
+  disabled = null;
+  created = null;
   params: any;
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-        this.textInput.nativeElement.focus();
-    });
-  }
+  // ngAfterViewInit() {
+  //   setTimeout(() => {
+  //       this.textInput.nativeElement.focus();
+  //   });
+  // }
   agInit(params: any): void {
     this.params = params;
   }
@@ -29,7 +34,7 @@ export class CheckboxFilterComponent implements OnInit, AfterViewInit {
   }
 
   isFilterActive() {
-    return this.filter !== '';
+    return (this.rejected !== false || this.approved !== false || this.disabled !== false || this.created !== false);
   }
 
   doesFilterPass(params) {
@@ -41,7 +46,24 @@ export class CheckboxFilterComponent implements OnInit, AfterViewInit {
     const value = this.params.valueGetter(params.node);
     console.log('value', value);
 
-    return value.startsWith(this.filter);
+    const filters = {
+      rejected: this.rejected,
+      approved: this.approved,
+      disabled: this.disabled,
+      created: this.created
+    };
+
+    const checkedFilters = Object.keys(filters).filter(inputWord => filters[inputWord] === true);
+    console.log('checkedFilters', checkedFilters);
+    let isInclude = false;
+    checkedFilters.forEach(checkFilter => {
+      if (value === checkFilter) {
+        isInclude = true;
+      }
+    });
+
+
+    return isInclude;
   }
 
   getModel() {
@@ -53,16 +75,17 @@ export class CheckboxFilterComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
 
-    const filter = event.target.elements.filter.value;
+    // const filter = event.target.elements.filter.value;
 
-    if (this.filter !== filter) {
-      this.filter = filter;
+    // if (this.filter !== filter) {
+    //   this.filter = filter;
 
-      /* notify the grid about the change */
-      this.params.filterChangedCallback();
-    }
+    //   /* notify the grid about the change */
+    //   this.params.filterChangedCallback();
+    // }
+    this.params.filterChangedCallback();
   }
 
 }
