@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import YearFilter from './stringExtensions';
+import { CheckboxFilterComponent } from './components/checkbox-filter/checkbox-filter.component';
+// import YearFilter from './stringExtensions';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,7 @@ export class AppComponent {
         {headerName: 'ROLE', field: 'role', width: 340, filter: 'agTextColumnFilter',
         filterParams: { applyButton: true, clearButton: true }},
         {headerName: 'STATUS', field: 'status', cellRenderer: (params) => {
-          console.log(params);
+          // console.log(params);
           // check the data exists, to avoid error
           if (params.value === 'approved') {
               // data exists, so we can access it
@@ -42,14 +43,20 @@ export class AppComponent {
           return '<div>' + '<span style="background-color: #eb5757; padding: 0.6em 1.2em; border-radius: 20px; color: white">' + params.data.status + '</span>' + '</div>';
       }
       },
-      filter: YearFilter
+      filter: 'checkboxFilterComponent'
+      // filter: YearFilter
     },
       {headerName: '', field: 'more', cellRenderer: (params) => {
-        console.log(params);
+        // console.log(params);
             return '<div>' + '<span style="color: #333333; font-weight: bold; cursor: pointer">' + 'Ver mas' + '</span>' + '</div>';
         }
       }
     ];
+
+    frameworkComponents = {
+      /* custom filtering component */
+      checkboxFilterComponent: CheckboxFilterComponent,
+    };
 
     irishAthletes() {
       return [
@@ -58,18 +65,18 @@ export class AppComponent {
           'created',
           'disabled'
       ];
-  }
+    }
 
     myAlert() {
       alert('ver mas');
     }
 
     onCellClicked($event) {
-      console.log($event);
+      // console.log($event);
       if ($event.colDef.field === 'more') {
         alert('MORE ABOUT: ' + $event.data.name);
       }
-  }
+    }
     // defaultColDef = {
       // set every column width
       // width: 280
@@ -77,19 +84,19 @@ export class AppComponent {
       // editable: true,
       // make every column use 'text' filter by default
       // filter: 'agTextColumnFilter'
-  // };
+    // };
 
-  // gridOptions = {
-  //   rowClassRules: {
+    // gridOptions = {
+    //   rowClassRules: {
         // row style function
         // 'sick-days-warning': function(params) {
         //     var numSickDays = params.data.sickDays;
         //     return  numSickDays > 5 && numSickDays <= 7;
         // },
         // row style expression
-//         'sick-days-breach': "data.status === 'approved'"
-//     }
-// };
+    //         'sick-days-breach': "data.status === 'approved'"
+    //     }
+    // };
 
     rowData = [
         { user: 'agutierrez', role: 'Usuario de consulta de entidad privada', name: 'Andrea Gutierrez', status: 'approved' },

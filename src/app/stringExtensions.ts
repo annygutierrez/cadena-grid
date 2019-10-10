@@ -107,6 +107,6 @@
 
 // this example isn't using getModel() and setModel(),
 // so safe to just leave these empty. don't do this in your code!!!
-YearFilter.prototype.getModel = () => {};
-YearFilter.prototype.setModel = () => {};
+// YearFilter.prototype.getModel = () => {};
+// YearFilter.prototype.setModel = () => {};
 
