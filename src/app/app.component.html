@@ -1,3 +1,5 @@
+<button class="download-button" (click)="onBtExport()">DESCARGAR REPORTE</button>
+
 <ag-grid-angular
     style="width: 1200px; height: 1200px;"
     class="ag-theme-balham"
@@ -5,5 +7,17 @@
     [columnDefs]="columnDefs"
     [frameworkComponents]="frameworkComponents"
     (cellClicked)="onCellClicked($event)"
+    suppressMenuHide="true"
+    rowSelection="multiple"
+    [groupSelectsChildren]="true"
+    [suppressRowClickSelection]="true"
+    (gridReady)="onGridReady($event)"
     >
 </ag-grid-angular>
+
+<!-- [columnDefs]="columnDefs"
+      [rowData]="rowData"
+      [rowSelection]="rowSelection"
+      [groupSelectsChildren]="true"
+      [suppressRowClickSelection]="true"
+      [autoGroupColumnDef]="autoGroupColumnDef" -->

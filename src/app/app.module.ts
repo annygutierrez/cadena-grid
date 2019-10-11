@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AgGridModule } from 'ag-grid-angular';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { CheckboxFilterComponent } from './components/checkbox-filter/checkbox-filter.component';
@@ -13,6 +13,7 @@ import { CheckboxFilterComponent } from './components/checkbox-filter/checkbox-f
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     FormsModule,
     AgGridModule.withComponents([CheckboxFilterComponent])
   ],

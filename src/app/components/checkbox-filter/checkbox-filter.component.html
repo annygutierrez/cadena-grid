@@ -1,10 +1,17 @@
-<form (submit)="onSubmit($event)">
+<form [formGroup]="form" class="floting-form" (ngSubmit)="onSubmit($event)">
   <!-- <input #i name="filter" [value]="filter" /> -->
+  <div formArrayName="orders" *ngFor="let order of arrayOfOrders; let i = index" class="individual-input">
+    <label>
+      <input (change)="onSubmit($event)" [formControlName]="i" type="checkbox">
+      {{ordersData[i].name}}
+    </label>
 
-  <input type="checkbox" name="status1" value="approved" [(ngModel)]="approved"> Approved<br>
-  <input type="checkbox" name="status2" value="rejected" [(ngModel)]="rejected"> Rejected<br>
-  <input type="checkbox" name="status3" value="disabled" [(ngModel)]="disabled"> Disabled<br>
-  <input type="checkbox" name="status3" value="created" [(ngModel)]="created"> Created<br>
+  </div>
 
-  <button>Apply</button>
+  <!-- <input (change)="onSubmit($event)" type="checkbox" name="status1" value="approved" [(ngModel)]="approved"> Approved<br>
+  <input (change)="onSubmit($event)" type="checkbox" name="status2" value="rejected" [(ngModel)]="rejected"> Rejected<br>
+  <input (change)="onSubmit($event)" type="checkbox" name="status3" value="disabled" [(ngModel)]="disabled"> Disabled<br>
+  <input (change)="onSubmit($event)" type="checkbox" name="status3" value="created" [(ngModel)]="created"> Created<br>
+   -->
+  <!-- <button>Apply</button> -->
 </form>

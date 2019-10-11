@@ -1,5 +1,10 @@
+declare const require: any;
+const jsPDF = require('jspdf');
+require('jspdf-autotable');
+
 import { Component } from '@angular/core';
 import { CheckboxFilterComponent } from './components/checkbox-filter/checkbox-filter.component';
+import { Papa } from 'ngx-papaparse';
 // import YearFilter from './stringExtensions';
 
 @Component({
@@ -7,8 +12,10 @@ import { CheckboxFilterComponent } from './components/checkbox-filter/checkbox-f
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
   title = 'app';
+  private gridApi;
 
     columnDefs = [
         {
@@ -20,12 +27,17 @@ export class AppComponent {
             color: '#333333'
           },
           filter: 'agTextColumnFilter',
-          filterParams: { applyButton: false, clearButton: false }
+          filterParams: { applyButton: false, clearButton: false },
+          headerCheckboxSelection: true,
+        headerCheckboxSelectionFilteredOnly: true,
+        checkboxSelection: true
+          // checkboxSelection: (params) => {
+          //   return params.node.group === true;
+          // }
         },
         {headerName: 'NAME AND LAST NAME', field: 'name', filter: 'agTextColumnFilter',
         filterParams: { applyButton: true, clearButton: true } },
-        {headerName: 'ROLE', field: 'role', width: 340, filter: 'agTextColumnFilter',
-        filterParams: { applyButton: true, clearButton: true }},
+        {headerName: 'ROLE', field: 'role', width: 340, filter: 'checkboxFilterComponent'},
         {headerName: 'STATUS', field: 'status', cellRenderer: (params) => {
           // console.log(params);
           // check the data exists, to avoid error
@@ -43,6 +55,7 @@ export class AppComponent {
           return '<div>' + '<span style="background-color: #eb5757; padding: 0.6em 1.2em; border-radius: 20px; color: white">' + params.data.status + '</span>' + '</div>';
       }
       },
+      // valueGetter: () => ['approved', 'disabled', 'created', 'rejected'],
       filter: 'checkboxFilterComponent'
       // filter: YearFilter
     },
@@ -57,6 +70,16 @@ export class AppComponent {
       /* custom filtering component */
       checkboxFilterComponent: CheckboxFilterComponent,
     };
+
+    constructor(private papa: Papa) {
+      // const csvData = '"Hello","World!"';
+
+      // this.papa.parse(csvData, {
+      //     complete: (result) => {
+      //         console.log('Parsed: ', result);
+      //     }
+      // });
+  }
 
     irishAthletes() {
       return [
@@ -77,6 +100,87 @@ export class AppComponent {
         alert('MORE ABOUT: ' + $event.data.name);
       }
     }
+
+    onGridReady(params) {
+      this.gridApi = params.api;
+      // this.gridColumnApi = params.columnApi;
+    }
+
+    onBtExport() {
+      const params = {
+        // skipHeader: getBooleanValue("#skipHeader"),
+        // columnGroups: getBooleanValue("#columnGroups"),
+        // skipFooters: getBooleanValue("#skipFooters"),
+        // skipGroups: getBooleanValue("#skipGroups"),
+        // skipPinnedTop: getBooleanValue("#skipPinnedTop"),
+        // skipPinnedBottom: getBooleanValue("#skipPinnedBottom"),
+        // allColumns: getBooleanValue("#allColumns"),
+        // onlySelected: getBooleanValue("#onlySelected"),
+        onlySelected: true
+        // suppressQuotes: getBooleanValue("#suppressQuotes"),
+        // fileName: document.querySelector("#fileName").value,
+        // columnSeparator: document.querySelector("#columnSeparator").value
+      };
+      // if (getBooleanValue("#skipGroupR")) {
+      //   params.shouldRowBeSkipped = function(params) {
+      //     return params.node.data.country.charAt(0) === "R";
+      //   };
+      // }
+      // if (getBooleanValue("#useCellCallback")) {
+      //   params.processCellCallback = function(params) {
+      //     if (params.value && params.value.toUpperCase) {
+      //       return params.value.toUpperCase();
+      //     } else {
+      //       return params.value;
+      //     }
+      //   };
+      // }
+      // if (getBooleanValue("#useSpecificColumns")) {
+      //   params.columnKeys = ["country", "bronze"];
+      // }
+      // if (getBooleanValue("#processHeaders")) {
+      //   params.processHeaderCallback = function(params) {
+      //     return params.column.getColDef().headerName.toUpperCase();
+      //   };
+      // }
+      // if (getBooleanValue("#customHeader")) {
+      //   params.customHeader = "[[[ This ia s sample custom header - so meta data maybe?? ]]]\n";
+      // }
+      // if (getBooleanValue("#customFooter")) {
+      //   params.customFooter = "[[[ This ia s sample custom footer - maybe a summary line here?? ]]]\n";
+      // }
+      const dataCSV = this.gridApi.getDataAsCsv(params);
+      // const csvData = '"Hello","World!"';
+
+      let parsedResult;
+
+      this.papa.parse(dataCSV, {
+          complete: (result) => parsedResult = result.data
+      });
+
+      const columns = parsedResult[0];
+
+      const rows = parsedResult.slice(1, -1);
+
+      const doc = new jsPDF('l', 'pt');
+      doc.autoTable(columns, rows); // typescript compile time error
+      doc.save('table.pdf');
+      console.log(dataCSV);
+
+    // downloadPDF() {
+
+    //   let columns = ["ID", "Name", "Country"];
+    //   let rows = [
+    //       [1, "Shaw", "Tanzania"],
+    //       [2, "Nelson", "Kazakhstan"],
+    //       [3, "Garcia", "Madagascar"],
+    //   ];
+
+    //   let doc = new jsPDF('l', 'pt');
+    //   doc.autoTable(columns, rows); // typescript compile time error
+    //   doc.save('table.pdf');
+    //   }
+  }
     // defaultColDef = {
       // set every column width
       // width: 280
