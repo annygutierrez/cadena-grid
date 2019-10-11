@@ -20,6 +20,9 @@ $border-color: transparent !default;
 .ag-header-cell-text {
   color: #333333;
 }
+// .ag-root {
+//   grid-row-gap: 20px !important;
+// }
 .ag-header-cell {
   display: flex;
   align-items: center;
@@ -42,6 +45,7 @@ $border-color: transparent !default;
 .ag-row {
   // margin-top: 20px;
   // margin-bottom: 20px;
+  // border-bottom: 4px outset rgba(189, 189, 189, 0.2);
   box-shadow: 8px 4px 8px 2px rgba(189, 189, 189, 0.2), 3px 8px 20px 2px rgba(189, 189, 189, 0.19);
 }
 @import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";

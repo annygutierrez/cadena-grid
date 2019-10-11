@@ -4,6 +4,7 @@ require('jspdf-autotable');
 
 import { Component } from '@angular/core';
 import { CheckboxFilterComponent } from './components/checkbox-filter/checkbox-filter.component';
+import { ColumnFilterComponent } from './components/column-filter/column-filter.component';
 import { Papa } from 'ngx-papaparse';
 // import YearFilter from './stringExtensions';
 
@@ -16,6 +17,14 @@ import { Papa } from 'ngx-papaparse';
 export class AppComponent {
   title = 'app';
   private gridApi;
+  rowHeight: 45;
+  private gridColumnApi;
+  rowStyle: {
+    'border-bottom': 'black 10px solid',
+    'border-top': 'black 10px solid'
+  };
+
+
 
     columnDefs = [
         {
@@ -29,8 +38,8 @@ export class AppComponent {
           filter: 'agTextColumnFilter',
           filterParams: { applyButton: false, clearButton: false },
           headerCheckboxSelection: true,
-        headerCheckboxSelectionFilteredOnly: true,
-        checkboxSelection: true
+          headerCheckboxSelectionFilteredOnly: true,
+          checkboxSelection: true
           // checkboxSelection: (params) => {
           //   return params.node.group === true;
           // }
@@ -62,13 +71,17 @@ export class AppComponent {
       {headerName: '', field: 'more', cellRenderer: (params) => {
         // console.log(params);
             return '<div>' + '<span style="color: #333333; font-weight: bold; cursor: pointer">' + 'Ver mas' + '</span>' + '</div>';
-        }
+        },
+        filter: 'columnFilterComponent'
       }
     ];
+
+
 
     frameworkComponents = {
       /* custom filtering component */
       checkboxFilterComponent: CheckboxFilterComponent,
+      columnFilterComponent: ColumnFilterComponent,
     };
 
     constructor(private papa: Papa) {
@@ -79,6 +92,11 @@ export class AppComponent {
       //         console.log('Parsed: ', result);
       //     }
       // });
+  }
+
+
+  showState(show) {
+    this.gridColumnApi.setColumnVisible('status', show);
   }
 
     irishAthletes() {
@@ -102,7 +120,9 @@ export class AppComponent {
     }
 
     onGridReady(params) {
+      console.log('READYYY', params);
       this.gridApi = params.api;
+      this.gridColumnApi = params.columnApi;
       // this.gridColumnApi = params.columnApi;
     }
 
@@ -160,7 +180,7 @@ export class AppComponent {
 
       const columns = parsedResult[0];
 
-      const rows = parsedResult.slice(1, -1);
+      const rows = parsedResult.slice(1, parsedResult.length);
 
       const doc = new jsPDF('l', 'pt');
       doc.autoTable(columns, rows); // typescript compile time error
@@ -212,6 +232,20 @@ export class AppComponent {
         { user: 'dhuaman', role: 'Usuario de consulta de entidad privada', name: 'Diego Huaman', status: 'created' },
         { user: 'jeijei', role: 'Usuario de consulta de entidad pública', name: 'Jevert Jahawanca', status: 'approved' },
         { user: 'projas', role: 'Registrador de certificados', name: 'Peter Rojas', status: 'approved' },
-        { user: 'rbennet', role: 'Usuario de consulta de entidad privada', name: 'Rebeca Bennet', status: 'approved' }
+        { user: 'rbennet', role: 'Usuario de consulta de entidad privada', name: 'Rebeca Bennet', status: 'approved' },
+
+        { user: 'agutierrez', role: 'Usuario de consulta de entidad privada', name: 'Andrea Gutierrez', status: 'approved' },
+
+        { user: 'epacheco', role: 'Usuario de consulta de entidad pública', name: 'Elias Pacheco', status: 'created' },
+        { user: 'projas', role: 'Registrador de certificados', name: 'Peter Rojas', status: 'approved' },
+        { user: 'rbennet', role: 'Usuario de consulta de entidad privada', name: 'Rebeca Bennet', status: 'approved' },
+        { user: 'macosta', role: 'Usuario de consulta de entidad pública', name: 'Elias Pacheco', status: 'rejected' },
+        { user: 'ccarrillo', role: 'Administrador de usuarios Cadena', name: 'Carlos Carrillo', status: 'approved' },
+        { user: 'chenao', role: 'Registrador de certificados', name: 'Chela Naori', status: 'disabled' },
+        { user: 'lleopardi', role: 'Aprobador de registros', name: 'Leonardo Leopardi', status: 'created' },
+        { user: 'dhuaman', role: 'Usuario de consulta de entidad privada', name: 'Diego Huaman', status: 'created' },
+        { user: 'jeijei', role: 'Usuario de consulta de entidad pública', name: 'Jevert Jahawanca', status: 'approved' },
+
     ];
+
 }

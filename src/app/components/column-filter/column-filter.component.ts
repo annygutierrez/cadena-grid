@@ -1,18 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 // import { NgForm } from '@angular/forms';
-import { AfterViewInit } from './after-view-init';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-checkbox-filter',
-  templateUrl: './checkbox-filter.component.html',
-  styleUrls: ['./checkbox-filter.component.scss']
+  selector: 'app-column-filter',
+  templateUrl: './column-filter.component.html',
+  styleUrls: ['./column-filter.component.scss']
 })
-export class CheckboxFilterComponent {
-  @ViewChild('i', {static: false}) textInput;
+export class ColumnFilterComponent {
 
+  @ViewChild('i', {static: false}) textInput;
+  private gridColumnApi;
   form: FormGroup;
-  ordersData = [];
+  ordersData = [
+    { id: 1, name: 'status', show: true },
+    { id: 2, name: 'role', show: true },
+    { id: 3, name: 'user', show: true },
+    { id: 4, name: 'name', show: true }
+  ];
 
   dataFilters = {
     status: [
@@ -64,10 +69,17 @@ export class CheckboxFilterComponent {
   //   });
   // }
   agInit(params: any): void {
-    console.log(params);
+    console.log('column ---- filter', params);
+    this.gridColumnApi = params.column.columnApi;
     this.params = params;
-    this.ordersData = this.dataFilters[params.colDef.field];
     this.addCheckboxes();
+  }
+
+  showState(columnName, position) {
+
+    this.ordersData[position].show = !this.ordersData[position].show;
+
+    this.gridColumnApi.setColumnVisible(columnName, this.ordersData[position].show);
   }
 
   isFilterActive() {
@@ -104,7 +116,8 @@ export class CheckboxFilterComponent {
   }
 
   onSubmit(event) {
-    this.params.filterChangedCallback();
+    // this.params.filterChangedCallback();
+
   }
 
 }

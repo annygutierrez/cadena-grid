@@ -5,20 +5,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { CheckboxFilterComponent } from './components/checkbox-filter/checkbox-filter.component';
+import { ColumnFilterComponent } from './components/column-filter/column-filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CheckboxFilterComponent
+    CheckboxFilterComponent,
+    ColumnFilterComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
-    AgGridModule.withComponents([CheckboxFilterComponent])
+    AgGridModule.withComponents([CheckboxFilterComponent, ColumnFilterComponent])
   ],
   entryComponents: [
-    CheckboxFilterComponent
+    CheckboxFilterComponent,
+    ColumnFilterComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

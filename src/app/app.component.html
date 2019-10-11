@@ -1,7 +1,8 @@
 <button class="download-button" (click)="onBtExport()">DESCARGAR REPORTE</button>
-
+  <button class="download-button" (click)="showState(true)">Show status</button>
+  <button class="download-button" (click)="showState(false)">Hide status</button>
 <ag-grid-angular
-    style="width: 1200px; height: 1200px;"
+    style="width: 1200px; height: 700px;"
     class="ag-theme-balham"
     [rowData]="rowData"
     [columnDefs]="columnDefs"
@@ -12,6 +13,8 @@
     [groupSelectsChildren]="true"
     [suppressRowClickSelection]="true"
     (gridReady)="onGridReady($event)"
+    [paginationAutoPageSize]="true"
+    [pagination]="true"
     >
 </ag-grid-angular>
 
