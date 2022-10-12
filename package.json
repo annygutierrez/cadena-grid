@@ -21,7 +21,7 @@
     "@angular/router": "~8.2.8",
     "ag-grid-angular": "^21.2.2",
     "ag-grid-community": "^21.2.2",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.2.5",
     "ngx-papaparse": "^4.0.4",
     "rxjs": "~6.4.0",
